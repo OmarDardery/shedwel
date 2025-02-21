@@ -62,7 +62,7 @@ function Schedule(props) {
   }, [weeklyEvents]); // Update size when events change
 
   return (
-    <div className="Schedule" style={{ width: 'clamp(fit-content, 80%, 800px)', margin: 'auto'}}>
+    <div className="Schedule" style={{ width: '80%', margin: 'auto', minWidth: 'fit-content', maxWidth: '800px' }}>
       <FullCalendar
         ref={calendarRef} // Add the ref
         plugins={[dayGridPlugin, timeGridPlugin]}
