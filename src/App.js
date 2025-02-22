@@ -15,6 +15,21 @@ function App() {
     const [chat, setChat] = useState([]);
     const [message, setMessage] = useState('');
 
+    useEffect(() => {
+        const savedSchedule = localStorage.getItem('schedule');
+        if (savedSchedule) {
+            console.log("Loaded schedule from localStorage:", savedSchedule);
+            setSchedule(JSON.parse(savedSchedule));
+        } else {
+            console.log("No saved schedule found in localStorage.");
+        }
+    }, []);
+    
+    useEffect(() => {
+        console.log("Saving schedule to localStorage:", schedule);
+        localStorage.setItem('schedule', JSON.stringify(schedule));
+    }, [schedule]);
+
     async function getResponse() {
         try {
             const userMessage = message; // Store the message before clearing the input
@@ -44,6 +59,11 @@ function App() {
     1.  **No Overlapping Events:** Ensure no events conflict within the same day.
     2.  **Working Hours:** Keep all events within the specified 'dayStart' and 'dayEnd' times.
     3.  **Error Handling:** If a request is invalid (e.g., overlapping events, out-of-bounds times, non-existent event to remove), return a clear and informative error message in the 'message' field of the JSON response.
+    4. **Flexibility:** Understand and adapt to various user inputs, providing helpful responses or asking for clarification when needed.
+    5. **Common sense:** If you cannot modify the schedule, return the schedule as you received it. Modify only the things that need modification.
+    6. **Always Return JSON:** Ensure that your response is always a valid JSON object.
+    7. **Smarts:** A user might ask for modifications that need processing like making a routine for finishing a course or a routine for going to the gym. adapt your reasoning to solve these problems.
+
     
     **Input Context:**
     * **Chat Context:**
@@ -82,33 +102,25 @@ function App() {
     
     Analyze the 'Chat Context' and the user's latest message. Update the 'events' array in the JSON response according to the user's request, while adhering to the 'Schedule Modification Rules'. Provide a descriptive message in the 'message' field. If the request is unclear or cannot be fulfilled, provide an appropriate error message. Always return a valid JSON object."
     `;
-            console.log("Prompt:", prompt);
+            console.log("prompt:", prompt);
     
             const result = await model.generateContent(prompt);
-            console.log("Raw AI Result:", result);
+            console.log("gemini result:", result);
     
             // Access the response text correctly
             const responseText = result.response?.candidates?.[0]?.content?.parts?.[0]?.text;
-            console.log("Raw AI Response:", responseText);
+            console.log("gemini response:", responseText);
     
             // Extract JSON from the response
             const jsonMatch = responseText && responseText.match(/```json\n([\s\S]*?)\n```/);
             const jsonString = jsonMatch ? jsonMatch[1].trim() : "";
     
-            console.log("Extracted JSON:", jsonString);
-    
-            if (!jsonString || jsonString.trim() === "") {
-                console.error("Extracted JSON string is empty.");
-                setChat(prevChat => [...prevChat, "⚠️ AI returned an empty JSON response. Try again!"]);
-                return;
-            }
-    
             let parsedResponse;
             try {
                 parsedResponse = JSON.parse(jsonString);
             } catch (parseError) {
-                console.error("JSON Parsing Error:", parseError);
-                setChat(prevChat => [...prevChat, "⚠️ AI returned invalid JSON. Try again!"]);
+                console.error("json Parsing Error:", parseError);
+                setChat(prevChat => [...prevChat, "a problem occured on our end, sorry"]);
                 return;
             }
     
@@ -126,8 +138,8 @@ function App() {
             }
     
         } catch (error) {
-            console.error("Error generating content:", error);
-            setChat(prevChat => [...prevChat, "⚠️ Something went wrong. Try again!"]);
+            console.error("error generating content:", error);
+            setChat(prevChat => [...prevChat, "something went wrong. Try again later!"]);
         }
     }
 
@@ -142,20 +154,21 @@ function App() {
                     display: "flex",
                     justifyContent: "center",
                     marginBottom: "5vh",
+                    backgroundColor: "#2f313aff"
                 }}>
 
-                    <h1 style={{}}>Shedwel☕</h1>
+                    <h1 style={{textAlign: "left", paddingLeft: "10px", color: "#F9F6F0"}}>  Shedwel☕</h1>
                 </div>
             <div className='container' style={{height: "70vh"}}>
                 
                 <Schedule routineData={schedule} />
                 <div className='chat' style={{ width: '40vw', margin: '0px', padding: "2vh", height: "80vh", paddingTop: "0vh", margin: "10px"}}>
-                    <h1 style={{backgroundColor: "whitesmoke", padding: "5px", borderRadius: "5px"}}>Chat</h1>
-                    <div className='chatbox' style={{flex: 1, overflowY: 'auto', height: "48vh", border: '1px solid #ccc', padding: "9px", display: "flex", flexDirection: "column"}}>
+                    <h1 style={{backgroundColor: "whitesmoke", padding: "5px", borderRadius: "5px", border: "1px solid gray"}}>Chat</h1>
+                    <div className='chatbox' style={{flex: 1, overflowY: 'auto', height: "48vh", border: '1px solid #ccc', padding: "9px", display: "flex", flexDirection: "column", color: "#F9F6F0"}}>
                         {chat.map((text, index) => (
-                        <div key={index} className='message' style={index % 2 === 0 ? {backgroundColor: "green", width: "80%", alignSelf: "flex-end", display: "flex", alignItems: "center", maxWidth: "fit-content", padding: "5px", borderRadius: "10px", margin: "10px"} : { backgroundColor: "whitesmoke", width: "80%", display: "flex", alignItems: "center", maxWidth: "fit-content", padding: "5px", borderRadius: "10px", margin: "10px"}}>
+                        <div key={index} className={index % 2 === 0 ? "message": "message ai"} style={index % 2 === 0 ? {backgroundColor: "#04213cff", width: "80%", alignSelf: "flex-end", display: "flex", alignItems: "center", maxWidth: "fit-content", borderRadius: "10px", margin: "10px", paddingLeft: "10px", paddingRight: "10px"} : {width: "80%", display: "flex", alignItems: "center", maxWidth: "fit-content", borderRadius: "10px", margin: "10px", backgroundColor:"#6d7694", paddingLeft: "10px", paddingRight: "10px"}}>
                                 
-                                <p>{text}</p>
+                                <p>{}{text}</p>
                             </div>
                         ))}
                     </div>
@@ -185,7 +198,8 @@ function App() {
                             height: "fit-content",
                             minHeight: "5vh",
                             position: "fixed",
-                            bottom: "12.5vh"
+                            bottom: "11vh",
+                            backgroundColor: "#F9F6F0",
                         }}
                     />
                 </div>
