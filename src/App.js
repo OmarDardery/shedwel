@@ -120,6 +120,8 @@ function App() {
                 setSchedule(prevSchedule => ({
                     ...prevSchedule,
                     events: parsedResponse.events,
+                    dayStart: parsedResponse.dayStart || prevSchedule.dayStart,
+                    dayEnd: parsedResponse.dayEnd || prevSchedule.dayEnd,
                 }));
             }
     
@@ -129,52 +131,68 @@ function App() {
         }
     }
 
-    useEffect(() => {
-        setSchedule(prevSchedule => ({
-            ...prevSchedule,
-            events: [
-                { day: 'Sat', startTime: '09:00', endTime: '11:00', title: 'CSE 122' },
-                { day: 'Sat', startTime: '11:00', endTime: '13:00', title: 'CSE 123' },
-                { day: 'Sun', startTime: '14:00', endTime: '16:00', title: 'PHM 113' },
-                { day: 'Mon', startTime: '09:00', endTime: '11:00', title: 'ECE 103' },
-                { day: 'Mon', startTime: '11:00', endTime: '13:00', title: 'CSE 122' },
-                { day: 'Tue', startTime: '14:00', endTime: '16:00', title: 'ECE 104' },
-                { day: 'Wed', startTime: '09:00', endTime: '11:00', title: 'PHM 114' },
-                { day: 'Wed', startTime: '14:00', endTime: '16:00', title: 'CSE 123' },
-                { day: 'Thu', startTime: '09:00', endTime: '11:00', title: 'PHM 114' },
-                { day: 'Thu', startTime: '11:00', endTime: '13:00', title: 'ECE 103' },
-                { day: 'Fri', startTime: '14:00', endTime: '16:00', title: 'PHM 113' },
-            ],
-        }));
-    }, []);
-
     return (
         <div className='App'>
-            <Schedule routineData={schedule} />
-            <div className='chat'>
-                <h1>Chat</h1>
-                <div className='chatbox'>
-                    {chat.map((text, index) => (
-                        <div key={index} className='message'>
-                            {index % 2 === 0 ? `You: ${text}` : `super duper professional ai: ${text}`}
-                            <p></p>
-                        </div>
-                    ))}
+            <div style={{
+                    width: "100vw",
+                    height: "10vh",
+                    backgroundColor: "#f5f5f5",
+                    top: "0",
+                    margin: "0px",
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: "5vh",
+                }}>
+
+                    <h1 style={{}}>Shedwel☕</h1>
                 </div>
-                <input
-                    type='text'
-                    placeholder='Type a message...'
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            getResponse();
-                        }
-                    }}
-                    value={message}
-                    onChange={(e) => {
-                        setMessage(e.target.value);
-                    }}
-                />
+            <div className='container' style={{height: "70vh"}}>
+                
+                <Schedule routineData={schedule} />
+                <div className='chat' style={{ width: '40vw', margin: '0px', padding: "2vh", height: "80vh", paddingTop: "0vh", margin: "10px"}}>
+                    <h1 style={{backgroundColor: "whitesmoke", padding: "5px", borderRadius: "5px"}}>Chat</h1>
+                    <div className='chatbox' style={{flex: 1, overflowY: 'auto', height: "48vh", border: '1px solid #ccc', padding: "9px", display: "flex", flexDirection: "column"}}>
+                        {chat.map((text, index) => (
+                        <div key={index} className='message' style={index % 2 === 0 ? {backgroundColor: "green", width: "80%", alignSelf: "flex-end", display: "flex", alignItems: "center", maxWidth: "fit-content", padding: "5px", borderRadius: "10px", margin: "10px"} : { backgroundColor: "whitesmoke", width: "80%", display: "flex", alignItems: "center", maxWidth: "fit-content", padding: "5px", borderRadius: "10px", margin: "10px"}}>
+                                
+                                <p>{text}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <input
+                        type='text'
+                        placeholder='Type a message...'
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                if(message !== ''){
+                                    getResponse();
+                                } else {
+                                    alert("cannot enter an empty message!");
+                                }
+                            }
+                        }}
+                        value={message}
+                        onChange={(e) => {
+                            setMessage(e.target.value);
+                        }}
+                        style={{
+                            width: '39%',
+                            padding: '8px',
+                            marginTop: '16px',
+                            fontSize: '16px',
+                            borderRadius: '4px',
+                            border: '1px solid #ccc',
+                            height: "fit-content",
+                            minHeight: "5vh",
+                            position: "fixed",
+                            bottom: "12.5vh"
+                        }}
+                    />
+                </div>
+                
+                
             </div>
+            
         </div>
     );
 }
