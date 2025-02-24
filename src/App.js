@@ -197,7 +197,6 @@ function App() {
                             border: '1px solid #ccc',
                             height: "fit-content",
                             minHeight: "5vh",
-                            position: "fixed",
                             bottom: "11vh",
                             backgroundColor: "#F9F6F0",
                         }}
