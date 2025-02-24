@@ -189,7 +189,7 @@ function App() {
                             setMessage(e.target.value);
                         }}
                         style={{
-                            width: '39%',
+                            width: '100%',
                             padding: '8px',
                             marginTop: '16px',
                             fontSize: '16px',
