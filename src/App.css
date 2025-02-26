@@ -15,5 +15,22 @@
 
 }
 body{
-    background-color: #ffffff;
+    background-color: #3C3D37;
+}
+@media (max-width: 1100px) {
+    .container {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+    }
+    .Schedule{
+        width: 90% !important;
+    }
+    .chat{
+        width: 90% !important;
+        margin-bottom: 20px !important;
+        order: -1;
+    }
+
 }

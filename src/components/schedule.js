@@ -55,7 +55,7 @@ function Schedule(props) {
   }, [weeklyEvents]); // Update size when events change
 
   return (
-    <div className="Schedule" style={{ width: '65vw', margin: 'auto', minWidth: 'fit-content', maxWidth: '800px', height: '80vh', backgroundColor: 'whitesmoke', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+    <div className="Schedule" style={{ width: '65vw', margin: '1.5vh', minWidth: 'fit-content', maxWidth: '800px', height: '80vh', backgroundColor: '#1E201E', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', color: "#f5f5f5" }}>
       <FullCalendar
         ref={calendarRef} // Add the ref
         plugins={[dayGridPlugin, timeGridPlugin]}

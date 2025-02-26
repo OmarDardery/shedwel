@@ -2,9 +2,9 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import Schedule from './components/schedule';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import Button from './components/button';
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINIAPI);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 function App() {
     const [schedule, setSchedule] = useState({
@@ -153,55 +153,64 @@ function App() {
                     margin: "0px",
                     display: "flex",
                     justifyContent: "center",
-                    marginBottom: "5vh",
                     backgroundColor: "#2f313aff"
                 }}>
 
                     <h1 style={{textAlign: "left", paddingLeft: "10px", color: "#F9F6F0"}}>  Shedwel☕</h1>
                 </div>
-            <div className='container' style={{height: "70vh"}}>
+            <div className='container' style={{height: "70vh", display: "flex", flexDirection: "row", justifyContent: "space-between", padding: "2.5vh"}}>
                 
                 <Schedule routineData={schedule} />
-                <div className='chat' style={{ width: '40vw', margin: '0px', padding: "2vh", height: "80vh", paddingTop: "0vh", margin: "10px"}}>
-                    <h1 style={{backgroundColor: "whitesmoke", padding: "5px", borderRadius: "5px", border: "1px solid gray"}}>Chat</h1>
-                    <div className='chatbox' style={{flex: 1, overflowY: 'auto', height: "48vh", border: '1px solid #ccc', padding: "9px", display: "flex", flexDirection: "column", color: "#F9F6F0"}}>
+                <div className='chat' style={{ width: '40vw', margin: '0px', padding: "2vh", height: "80vh", paddingTop: "0vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: "10px", gap: "2.5vh"
+                }}>
+                    <h1 style={{backgroundColor: "whitesmoke", padding: "5px", borderRadius: "5px", border: "1px solid gray", width: "90%", margin: "0px"}}>Chat</h1>
+                    <div className='chatbox' style={{flex: 1, overflowY: 'auto', height: "48vh", border: '1px solid #ccc', padding: "9px", display: "flex", flexDirection: "column", color: "#F9F6F0", width: "88%", backgroundColor: "#1E201E"}}>
                         {chat.map((text, index) => (
                         <div key={index} className={index % 2 === 0 ? "message": "message ai"} style={index % 2 === 0 ? {backgroundColor: "#04213cff", width: "80%", alignSelf: "flex-end", display: "flex", alignItems: "center", maxWidth: "fit-content", borderRadius: "10px", margin: "10px", paddingLeft: "10px", paddingRight: "10px"} : {width: "80%", display: "flex", alignItems: "center", maxWidth: "fit-content", borderRadius: "10px", margin: "10px", backgroundColor:"#6d7694", paddingLeft: "10px", paddingRight: "10px"}}>
                                 
-                                <p>{}{text}</p>
+                                <p>{text}</p>
                             </div>
                         ))}
                     </div>
-                    <input
-                        type='text'
-                        placeholder='Type a message...'
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                if(message !== ''){
+                    <div style={{display: "flex", flexDirection: "row", width: "90%", justifyContent: "space-between", height: "5vh", gap: "2vh"}}>
+                        <input
+                            type='text'
+                            placeholder='Type a message...'
+                            value={message}
+                            onChange={(e) => {
+                                setMessage(e.target.value);
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '8px',
+                                fontSize: '16px',
+                                borderRadius: '4px',
+                                border: '1px solid #ccc',
+                                backgroundColor: "#F9F6F0",
+                                height: "100%"
+                            }}
+                            onKeyDown={
+                                (e) => {
+                                    if(e.key === 'Enter') {
+                                        if (message !== '') {
+                                            getResponse();
+                                        } else {
+                                            alert("Please enter a message before sending");
+                                        }
+                                    }
+                                }}
+                            
+
+                        />
+                        <Button onClick={() => {
+                                if (message !== '') {
                                     getResponse();
                                 } else {
-                                    alert("cannot enter an empty message!");
+                                    alert("Please enter a message");
                                 }
-                            }
-                        }}
-                        value={message}
-                        onChange={(e) => {
-                            setMessage(e.target.value);
-                        }}
-                        style={{
-                            width: '39%',
-                            padding: '8px',
-                            marginTop: '16px',
-                            fontSize: '16px',
-                            borderRadius: '4px',
-                            border: '1px solid #ccc',
-                            height: "fit-content",
-                            minHeight: "5vh",
-                            position: "fixed",
-                            bottom: "11vh",
-                            backgroundColor: "#F9F6F0",
-                        }}
-                    />
+                            }} />
+                    </div>
+                    
                 </div>
                 
                 
