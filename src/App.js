@@ -208,9 +208,31 @@ function App() {
                                 } else {
                                     alert("Please enter a message");
                                 }
+<<<<<<< HEAD
                             }} />
                     </div>
                     
+=======
+                            }
+                        }}
+                        value={message}
+                        onChange={(e) => {
+                            setMessage(e.target.value);
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '8px',
+                            marginTop: '16px',
+                            fontSize: '16px',
+                            borderRadius: '4px',
+                            border: '1px solid #ccc',
+                            height: "fit-content",
+                            minHeight: "5vh",
+                            bottom: "11vh",
+                            backgroundColor: "#F9F6F0",
+                        }}
+                    />
+>>>>>>> 5520fb8bddde00bcb0f99d68315dcb533c525a51
                 </div>
                 
                 
