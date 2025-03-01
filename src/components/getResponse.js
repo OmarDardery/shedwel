@@ -1,8 +1,7 @@
 async function getResponse(chat, setChat, message, setMessage, schedule, setSchedule, model) {
     try {
-        const userMessage = message; // Store the message before clearing the input
-        setChat(prevChat => [...prevChat, userMessage]);
-        setMessage(''); // Clear the input field
+        setChat(prevChat => [...prevChat, message]);
+        setMessage('');
 
         const currentScheduleString = JSON.stringify(schedule);
 
@@ -39,7 +38,7 @@ async function getResponse(chat, setChat, message, setMessage, schedule, setSche
         index % 2 === 0 ? `user: ${text}` : `gemini (you): ${text}`
     ).join("\\n")}
 * **User's Current Message:**
-    ${userMessage}
+    ${message}
 * **Current Schedule (JSON):**
     ${currentScheduleString}
 
@@ -69,7 +68,7 @@ async function getResponse(chat, setChat, message, setMessage, schedule, setSche
 **Your Task:**
 
 Analyze the 'Chat Context' and the user's latest message. Update the 'events' array in the JSON response according to the user's request, while adhering to the 'Schedule Modification Rules'. Provide a descriptive message in the 'message' field. If the request is unclear or cannot be fulfilled, provide an appropriate error message. Always return a valid JSON object."
-`;
+        `;
         console.log("prompt:", prompt);
 
         const result = await model.generateContent(prompt);
