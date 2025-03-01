@@ -36,7 +36,6 @@ function App() {
             <div style={{
                     width: "100vw",
                     height: "10vh",
-                    backgroundColor: "#f5f5f5",
                     top: "0",
                     margin: "0px",
                     display: "flex",
