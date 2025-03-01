@@ -2,9 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import Schedule from './components/schedule';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Button from './components/button';
 import Chat from './components/chat';
-import getResponse from './components/getResponse';
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINIAPI);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
