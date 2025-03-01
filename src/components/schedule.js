@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'; // Import useRef and useEffect
+import React, { useEffect, useRef } from 'react'; // Import useRef and useEffect
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -6,19 +6,11 @@ import moment from 'moment';
 
 function Schedule(props) {
   const calendarRef = useRef(null); // Create a ref for the FullCalendar component
-  const [routineData, setRoutineData] = useState([]); // ✅ State for routine data
-
-  // ✅ Update routineData when props.routineData changes
-  useEffect(() => {
-    if (props.routineData) {
-      setRoutineData(props.routineData.events);
-    }
-  }, [props.routineData.events]); // Runs when props.routineData updates
-  // Sample routine data (replace with your actual data)
+  
   
   const getEventsForWeek = (weekStart) => {
     const events = [];
-    routineData.forEach((routine) => {
+    props.routineData.events.forEach((routine) => {
       const dayIndex = moment().day(routine.day).weekday();
       const eventStart = moment(weekStart)
         .add(dayIndex, 'days')
