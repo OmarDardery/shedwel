@@ -43,8 +43,9 @@ function App() {
                     backgroundColor: "#2f313aff"
                 }}>
 
-                    <h1 style={{textAlign: "left", paddingLeft: "10px", color: "#F9F6F0"}}>Shedwel☕</h1>
-                </div>
+                <h1 style={{textAlign: "left", paddingLeft: "10px", color: "#F9F6F0"}}>Shedwel☕</h1>
+                
+            </div>
             <div className='container' style={{height: "70vh", display: "flex", flexDirection: "row", justifyContent: "space-between", padding: "2.5vh"}}>
                 
                 <Schedule routineData={schedule} />
